@@ -13,6 +13,10 @@ import epd2in13_V4  # Импортируем драйвер дисплея
 import subprocess
 import logging
 
+# Параметры экрана Waveshare (например, 250x122 для 2.13-дюймового экрана)
+EPD_WIDTH = 250
+EPD_HEIGHT = 122
+
 def get_wifi_info():
     try:
         # Выполняем команду nmcli для получения информации о текущем Wi-Fi
@@ -97,6 +101,31 @@ def get_mem_info():
     except Exception as e:
         print(f"An error occurred: {e}")
 
+# Функция для переноса текста по словам
+def wrap_text(text, font, max_width):
+    """Разбивает текст на строки, чтобы они умещались в указанную ширину"""
+    lines = []
+    words = text.split(' ')
+    current_line = []
+
+    for word in words:
+        current_line.append(word)
+        # Создаем временную строку с добавленным словом и проверяем её ширину
+        temp_line = ' '.join(current_line)
+        width, _ = font.getsize(temp_line)
+        
+        if width > max_width:
+            # Если строка выходит за пределы экрана, переносим её
+            current_line.pop()  # Убираем последнее слово
+            lines.append(' '.join(current_line))  # Добавляем строку в список
+            current_line = [word]  # Начинаем новую строку с текущего слова
+
+    # Добавляем оставшиеся слова
+    if current_line:
+        lines.append(' '.join(current_line))
+
+    return lines
+
 def get_random_quote():
     try:
         ## выполнение запроса get
@@ -154,8 +183,21 @@ while (True):
         quote_steps = 6
     quote_steps -= 1
 
-    ip_draw.text((0, 70), quote_data[0], font = quote_font, fill = 0)
-    ip_draw.text((0, 85), quote_data[1], font = quote_font, fill = 0)
+    image = Image.new('1', (EPD_WIDTH, EPD_HEIGHT), 255)  # Белый фон (255)
+    draw = ImageDraw.Draw(image)
+
+    # Получаем список строк с учётом переноса
+    wrapped_text = wrap_text(quote_data[0], quote_font, EPD_WIDTH - 5)  # 5 - отступы от краёв
+
+    # Рисуем текст построчно
+    y_offset = 0
+    line_height = quote_font.getsize('A')[1]  # Высота строки
+    for line in wrapped_text:
+        draw.text((2, y_offset), line, font=quote_font, fill=0)  # fill=0 - черный текст
+        y_offset += line_height
+
+    # ip_draw.text((0, 65), quote_data[0], font = quote_font, fill = 0)
+    ip_draw.text((0, EPD_HEIGHT - 10), quote_data[1], font = quote_font, fill = 0)
 
     epd.displayPartial(epd.getbuffer(ip_image))
 
