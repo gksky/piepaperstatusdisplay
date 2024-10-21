@@ -176,7 +176,7 @@ while (True):
     mem_info = get_mem_info()
     logging.info(mem_info)
     ip_draw.text((0, 36), 'RAM: ' + mem_info[0], font = font, fill = 0)
-    ip_draw.text((125, 36), 'Swap: ' + mem_info[1], font = font, fill = 0)
+    ip_draw.text((126, 36), 'Swap: ' + mem_info[1], font = font, fill = 0)
 
     if quote_steps == 0:
         quote_data = get_random_quote()
