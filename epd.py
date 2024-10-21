@@ -183,8 +183,8 @@ while (True):
         quote_steps = 6
     quote_steps -= 1
 
-    image = Image.new('1', (EPD_WIDTH, EPD_HEIGHT), 255)  # Белый фон (255)
-    draw = ImageDraw.Draw(image)
+    # image = Image.new('2', (EPD_WIDTH, EPD_HEIGHT), 255)  # Белый фон (255)
+    # draw = ImageDraw.Draw(image)
 
     # Получаем список строк с учётом переноса
     wrapped_text = wrap_text(quote_data[0], quote_font, EPD_WIDTH - 5)  # 5 - отступы от краёв
@@ -193,7 +193,7 @@ while (True):
     y_offset = 0
     line_height = quote_font.getsize('A')[1]  # Высота строки
     for line in wrapped_text:
-        draw.text((2, y_offset), line, font=quote_font, fill=0)  # fill=0 - черный текст
+        ip_draw.text((2, y_offset), line, font=quote_font, fill=0)  # fill=0 - черный текст
         y_offset += line_height
 
     # ip_draw.text((0, 65), quote_data[0], font = quote_font, fill = 0)
