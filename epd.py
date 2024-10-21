@@ -193,7 +193,7 @@ while (True):
     y_offset = 0
     line_height = quote_font.getsize('A')[1]  # Высота строки
     for line in wrapped_text:
-        ip_draw.text((2, y_offset), line, font=quote_font, fill=0)  # fill=0 - черный текст
+        ip_draw.text((2, y_offset + 65), line, font=quote_font, fill=0)  # fill=0 - черный текст
         y_offset += line_height
 
     # ip_draw.text((0, 65), quote_data[0], font = quote_font, fill = 0)
