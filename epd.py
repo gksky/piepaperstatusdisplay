@@ -150,8 +150,9 @@ epd.init()
 # Очищаем дисплей
 epd.Clear(0xFF)
 # Загружаем шрифт
-font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 18)
+font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 16)
 quote_font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 12)
+author_font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 10)
 #firstTime = True
 ip_image = Image.new('1', (epd.height, epd.width), 255)
 ip_draw = ImageDraw.Draw(ip_image)
@@ -166,16 +167,16 @@ while (True):
 
     cpu_usage = get_cpu_usage()
     logging.info(cpu_usage)
-    ip_draw.text((0, 20), 'CPU: ' + cpu_usage, font = font, fill = 0)
+    ip_draw.text((0, 18), 'CPU: ' + cpu_usage, font = font, fill = 0)
 
     cpu_temp = get_cpu_temp()
     logging.info(cpu_temp)
-    ip_draw.text((167, 20), 't: ' + cpu_temp, font = font, fill = 0)
+    ip_draw.text((167, 18), 't: ' + cpu_temp, font = font, fill = 0)
 
     mem_info = get_mem_info()
     logging.info(mem_info)
-    ip_draw.text((0, 40), 'RAM: ' + mem_info[0], font = font, fill = 0)
-    ip_draw.text((125, 40), 'Swap: ' + mem_info[1], font = font, fill = 0)
+    ip_draw.text((0, 36), 'RAM: ' + mem_info[0], font = font, fill = 0)
+    ip_draw.text((125, 36), 'Swap: ' + mem_info[1], font = font, fill = 0)
 
     if quote_steps == 0:
         quote_data = get_random_quote()
@@ -193,11 +194,11 @@ while (True):
     y_offset = 0
     line_height = quote_font.getsize('A')[1]  # Высота строки
     for line in wrapped_text:
-        ip_draw.text((2, y_offset + 60), line, font=quote_font, fill=0)  # fill=0 - черный текст
-        y_offset += line_height
+        ip_draw.text((2, y_offset + 54), line, font=quote_font, fill=0)  # fill=0 - черный текст
+        y_offset += (line_height + 2)
 
     # ip_draw.text((0, 65), quote_data[0], font = quote_font, fill = 0)
-    ip_draw.text((0, EPD_HEIGHT - 12), quote_data[1], font = quote_font, fill = 0)
+    ip_draw.text((0, EPD_HEIGHT - 12), quote_data[1], font = author_font, fill = 0)
 
     epd.displayPartial(epd.getbuffer(ip_image))
 
