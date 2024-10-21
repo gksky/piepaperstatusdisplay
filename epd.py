@@ -194,11 +194,11 @@ while (True):
     y_offset = 0
     line_height = quote_font.getsize('A')[1]  # Высота строки
     for line in wrapped_text:
-        ip_draw.text((2, y_offset + 54), line, font=quote_font, fill=0)  # fill=0 - черный текст
-        y_offset += (line_height + 2)
+        ip_draw.text((0, y_offset + 54), line, font=quote_font, fill=0)  # fill=0 - черный текст
+        y_offset += line_height
 
     # ip_draw.text((0, 65), quote_data[0], font = quote_font, fill = 0)
-    ip_draw.text((0, EPD_HEIGHT - 12), quote_data[1], font = author_font, fill = 0)
+    ip_draw.text((EPD_WIDTH - (author_font.getsize(quote_data[1])), EPD_HEIGHT - 12), quote_data[1], font = author_font, fill = 0)
 
     epd.displayPartial(epd.getbuffer(ip_image))
 
