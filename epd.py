@@ -151,9 +151,10 @@ while (True):
     if quote_steps == 5:
         quote_data = get_random_quote()
         logging.info(quote_data)
-        ip_draw.text((0, 70), quote_data[0], font = quote_font, fill = 0)
-        ip_draw.text((0, 85), quote_data[1], font = quote_font, fill = 0)
         quote_steps = 0 
+
+    ip_draw.text((0, 70), quote_data[0], font = quote_font, fill = 0)
+    ip_draw.text((0, 85), quote_data[1], font = quote_font, fill = 0)
 
     epd.displayPartial(epd.getbuffer(ip_image))
 
