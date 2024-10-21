@@ -108,8 +108,9 @@ def get_random_quote():
 
         else:
             print("Ошибка при получении цитаты")
-    except:
+    except Exception as e:
         print("Что-то пошло не так! Попробуй еще раз!")
+        return (e, e,)
 
 logging.basicConfig(level=logging.DEBUG)
 quote_steps = 0
