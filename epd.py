@@ -1,7 +1,7 @@
 
 
 
-
+import requests
 import json
 import sys
 import os
@@ -97,6 +97,20 @@ def get_mem_info():
     except Exception as e:
         print(f"An error occurred: {e}")
 
+def get_random_quote():
+    try:
+        ## выполнение запроса get
+        response = requests.get("http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=ru")
+        if response.status_code == 200:
+            ## извлечение основных данных
+            json_data = response.json()
+            return (json_data['quoteText'], json_data['quoteAuthor'],)
+
+        else:
+            print("Ошибка при получении цитаты")
+    except:
+        print("Что-то пошло не так! Попробуй еще раз!")
+
 logging.basicConfig(level=logging.DEBUG)
 
 # Инициализируем дисплей
@@ -107,6 +121,7 @@ epd.init()
 epd.Clear(0xFF)
 # Загружаем шрифт
 font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 18)
+quote_font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 12)
 #firstTime = True
 ip_image = Image.new('1', (epd.height, epd.width), 255)
 ip_draw = ImageDraw.Draw(ip_image)
@@ -131,6 +146,11 @@ while (True):
     logging.info(mem_info)
     ip_draw.text((0, 40), 'RAM: ' + mem_info[0], font = font, fill = 0)
     ip_draw.text((125, 40), 'Swap: ' + mem_info[1], font = font, fill = 0)
+
+    quote_data = get_random_quote()
+    logging.info(quote_data)
+    ip_draw.text((0, 60), 'RAM: ' + mem_info[0], font = quote_font, fill = 0)
+    ip_draw.text((0, 80), 'Swap: ' + mem_info[1], font = quote_font, fill = 0)
 
     epd.displayPartial(epd.getbuffer(ip_image))
 
