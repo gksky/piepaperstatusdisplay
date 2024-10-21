@@ -187,17 +187,17 @@ while (True):
     # draw = ImageDraw.Draw(image)
 
     # Получаем список строк с учётом переноса
-    wrapped_text = wrap_text(quote_data[0], quote_font, EPD_WIDTH - 5)  # 5 - отступы от краёв
+    wrapped_text = wrap_text(quote_data[0], quote_font, EPD_WIDTH)
 
     # Рисуем текст построчно
     y_offset = 0
     line_height = quote_font.getsize('A')[1]  # Высота строки
     for line in wrapped_text:
-        ip_draw.text((2, y_offset + 65), line, font=quote_font, fill=0)  # fill=0 - черный текст
+        ip_draw.text((2, y_offset + 60), line, font=quote_font, fill=0)  # fill=0 - черный текст
         y_offset += line_height
 
     # ip_draw.text((0, 65), quote_data[0], font = quote_font, fill = 0)
-    ip_draw.text((0, EPD_HEIGHT - 10), quote_data[1], font = quote_font, fill = 0)
+    ip_draw.text((0, EPD_HEIGHT - 12), quote_data[1], font = quote_font, fill = 0)
 
     epd.displayPartial(epd.getbuffer(ip_image))
 
