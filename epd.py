@@ -112,7 +112,7 @@ def get_random_quote():
         print("Что-то пошло не так! Попробуй еще раз!")
 
 logging.basicConfig(level=logging.DEBUG)
-
+quote_steps = 0
 # Инициализируем дисплей
 epd = epd2in13_V4.EPD()
 epd.init()
@@ -147,10 +147,13 @@ while (True):
     ip_draw.text((0, 40), 'RAM: ' + mem_info[0], font = font, fill = 0)
     ip_draw.text((125, 40), 'Swap: ' + mem_info[1], font = font, fill = 0)
 
-    quote_data = get_random_quote()
-    logging.info(quote_data)
-    ip_draw.text((0, 70), quote_data[0], font = quote_font, fill = 0)
-    ip_draw.text((0, 85), quote_data[1], font = quote_font, fill = 0)
+    quote_steps += 1
+    if quote_steps == 5:
+        quote_data = get_random_quote()
+        logging.info(quote_data)
+        ip_draw.text((0, 70), quote_data[0], font = quote_font, fill = 0)
+        ip_draw.text((0, 85), quote_data[1], font = quote_font, fill = 0)
+        quote_steps = 0 
 
     epd.displayPartial(epd.getbuffer(ip_image))
 
