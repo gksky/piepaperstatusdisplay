@@ -198,7 +198,7 @@ while (True):
         y_offset += line_height
 
     # ip_draw.text((0, 65), quote_data[0], font = quote_font, fill = 0)
-    ip_draw.text((EPD_WIDTH - (author_font.getsize(quote_data[1])[1]), EPD_HEIGHT - 12), quote_data[1], font = author_font, fill = 0)
+    ip_draw.text((EPD_WIDTH - (author_font.getsize(quote_data[1])[0]), EPD_HEIGHT - 12), quote_data[1], font = author_font, fill = 0)
 
     epd.displayPartial(epd.getbuffer(ip_image))
 
