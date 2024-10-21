@@ -149,8 +149,8 @@ while (True):
 
     quote_data = get_random_quote()
     logging.info(quote_data)
-    ip_draw.text((0, 70), 'RAM: ' + quote_data[0], font = quote_font, fill = 0)
-    ip_draw.text((0, 80), 'Swap: ' + quote_data[1], font = quote_font, fill = 0)
+    ip_draw.text((0, 70), quote_data[0], font = quote_font, fill = 0)
+    ip_draw.text((0, 85), quote_data[1], font = quote_font, fill = 0)
 
     epd.displayPartial(epd.getbuffer(ip_image))
 
