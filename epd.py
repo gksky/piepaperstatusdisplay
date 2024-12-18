@@ -162,8 +162,10 @@ def time_until_friday_19():
     # Получаем количество часов и минут
     hours, remainder = divmod(remaining_time.seconds, 3600)
     minutes = remainder // 60
-    
-    return remaining_time.days * 24 + hours, minutes
+    if remaining_time.days == 0 and minutes == 0:
+        return 0, 0
+    else:
+        return remaining_time.days * 24 + hours, minutes
 
 logging.basicConfig(level=logging.DEBUG)
 quote_steps = 0
@@ -227,7 +229,7 @@ while (True):
         ip_draw.text((EPD_WIDTH - (author_font.getsize(quote_data[1])[0]), EPD_HEIGHT - 12), quote_data[1], font = author_font, fill = 0)
     else:
         remaining_hours, remaining_minutes = time_until_friday_19()
-        ip_draw.text((0, 60), f"{remaining_hours - 3}:{remaining_minutes}", font = clock_font, fill = 0)
+        ip_draw.text((0, 60), f"{str(remaining_hours - 3).zfill(2)}:{str(remaining_minutes).zfill(2)}", font = clock_font, fill = 0)
 
     epd.displayPartial(epd.getbuffer(ip_image))
 
