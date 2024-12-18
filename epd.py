@@ -1,6 +1,6 @@
 
 
-
+from datetime import datetime, timedelta
 import requests
 import json
 import sys
@@ -144,6 +144,27 @@ def get_random_quote():
         print("Что-то пошло не так! Попробуй еще раз!")
         return None
 
+def time_until_friday_19():
+    # Получаем текущее время
+    now = datetime.now()
+    
+    # Устанавливаем целевую дату и время (пятница в 19:00)
+    days_ahead = 4 - now.weekday()  # 4 соответствует пятнице
+    if days_ahead < 0:  # Если сегодня уже пятница, устанавливаем на следующую
+        days_ahead += 7
+    
+    target_time = now + timedelta(days=days_ahead)
+    target_time = target_time.replace(hour=19, minute=0, second=0, microsecond=0)
+    
+    # Вычисляем оставшееся время
+    remaining_time = target_time - now
+    
+    # Получаем количество часов и минут
+    hours, remainder = divmod(remaining_time.seconds, 3600)
+    minutes = remainder // 60
+    
+    return remaining_time.days * 24 + hours, minutes
+
 logging.basicConfig(level=logging.DEBUG)
 quote_steps = 0
 # Инициализируем дисплей
@@ -156,6 +177,7 @@ epd.Clear(0xFF)
 font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 16)
 quote_font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 12)
 author_font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 10)
+clock_font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 36)
 #firstTime = True
 ip_image = Image.new('1', (epd.height, epd.width), 255)
 ip_draw = ImageDraw.Draw(ip_image)
@@ -182,7 +204,7 @@ while (True):
     ip_draw.text((126, 36), 'Swap: ' + mem_info[1], font = font, fill = 0)
 
     if quote_steps == 0:
-        quote_data = get_random_quote()
+        quote_data = None # get_random_quote()
         logging.info(quote_data)
         quote_steps = 6
     quote_steps -= 1
@@ -203,7 +225,10 @@ while (True):
 
     # ip_draw.text((0, 65), quote_data[0], font = quote_font, fill = 0)
         ip_draw.text((EPD_WIDTH - (author_font.getsize(quote_data[1])[0]), EPD_HEIGHT - 12), quote_data[1], font = author_font, fill = 0)
-
+    else:
+        remaining_hours, remaining_minutes = time_until_friday_19()
+        ip_draw.text((0, 65), f"{remaining_hours}:{remaining_minutes}", font = clock_font, fill = 0)
+        
     epd.displayPartial(epd.getbuffer(ip_image))
 
 # Ожидание перед выключением
