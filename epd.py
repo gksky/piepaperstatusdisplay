@@ -179,7 +179,7 @@ epd.Clear(0xFF)
 font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 16)
 quote_font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 12)
 author_font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 10)
-clock_font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 64)
+clock_font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 72)
 #firstTime = True
 ip_image = Image.new('1', (epd.height, epd.width), 255)
 ip_draw = ImageDraw.Draw(ip_image)
@@ -229,7 +229,7 @@ while (True):
         ip_draw.text((EPD_WIDTH - (author_font.getsize(quote_data[1])[0]), EPD_HEIGHT - 12), quote_data[1], font = author_font, fill = 0)
     else:
         remaining_hours, remaining_minutes = time_until_friday_19()
-        ip_draw.text((0, 60), f"{str(remaining_hours - 3).zfill(2)}:{str(remaining_minutes).zfill(2)}", font = clock_font, fill = 0)
+        ip_draw.text((0, 55), f"{str(remaining_hours - 3).zfill(2)}:{str(remaining_minutes).zfill(2)}", font = clock_font, fill = 0)
 
     epd.displayPartial(epd.getbuffer(ip_image))
 
