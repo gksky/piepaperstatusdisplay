@@ -105,6 +105,9 @@ def get_mem_info():
 def wrap_text(text, font, max_width):
     """Разбивает текст на строки, чтобы они умещались в указанную ширину"""
     lines = []
+    print(text)
+    if not text:
+        return lines
     words = text.split(' ')
     current_line = []
 
@@ -139,7 +142,7 @@ def get_random_quote():
             print("Ошибка при получении цитаты")
     except Exception as e:
         print("Что-то пошло не так! Попробуй еще раз!")
-        return (e, e,)
+        return None
 
 logging.basicConfig(level=logging.DEBUG)
 quote_steps = 0
@@ -186,19 +189,20 @@ while (True):
 
     # image = Image.new('2', (EPD_WIDTH, EPD_HEIGHT), 255)  # Белый фон (255)
     # draw = ImageDraw.Draw(image)
-
+    wrapped_text = []
     # Получаем список строк с учётом переноса
-    wrapped_text = wrap_text(quote_data[0], quote_font, EPD_WIDTH)
+    if quote_data:
+        wrapped_text = wrap_text(quote_data[0], quote_font, EPD_WIDTH)
 
     # Рисуем текст построчно
-    y_offset = 0
-    line_height = quote_font.getsize('A')[1] + 2  # Высота строки
-    for line in wrapped_text:
-        ip_draw.text((0, y_offset + 54), line, font=quote_font, fill=0)  # fill=0 - черный текст
-        y_offset += line_height
+        y_offset = 0
+        line_height = quote_font.getsize('A')[1] + 2  # Высота строки
+        for line in wrapped_text:
+            ip_draw.text((0, y_offset + 54), line, font=quote_font, fill=0)  # fill=0 - черный текст
+            y_offset += line_height
 
     # ip_draw.text((0, 65), quote_data[0], font = quote_font, fill = 0)
-    ip_draw.text((EPD_WIDTH - (author_font.getsize(quote_data[1])[0]), EPD_HEIGHT - 12), quote_data[1], font = author_font, fill = 0)
+        ip_draw.text((EPD_WIDTH - (author_font.getsize(quote_data[1])[0]), EPD_HEIGHT - 12), quote_data[1], font = author_font, fill = 0)
 
     epd.displayPartial(epd.getbuffer(ip_image))
 
