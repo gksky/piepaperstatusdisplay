@@ -229,7 +229,7 @@ while (True):
         ip_draw.text((EPD_WIDTH - (author_font.getsize(quote_data[1])[0]), EPD_HEIGHT - 12), quote_data[1], font = author_font, fill = 0)
     else:
         remaining_hours, remaining_minutes = time_until_friday_19()
-        ip_draw.text((0, 55), f"{str(remaining_hours - 3).zfill(2)}:{str(remaining_minutes).zfill(2)}", font = clock_font, fill = 0)
+        ip_draw.text((0, 50), f"{str(remaining_hours - 3).zfill(2)}:{str(remaining_minutes).zfill(2)}", font = clock_font, fill = 0)
 
     epd.displayPartial(epd.getbuffer(ip_image))
 
